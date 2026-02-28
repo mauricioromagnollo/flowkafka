@@ -1,0 +1,45 @@
+# Binaries / Output
+app
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin
+testbin/
+getdx-worker
+getdx-worker.exe
+*.out
+
+# Debug
+__debug*
+
+# Test
+*.test
+
+# Kubernetes
+!vendor/**/zz_generated.*
+
+# Editor / IDE
+.idea
+*.swp
+*.swo
+*~
+vendor/
+.vscode/
+
+# Temporary
+*.tmp
+tmp/
+
+# Sensitive
+*.dont
+*.pem
+.env
+
+# OS
+.DS_Store
+
+# Rest Client
+*.http
+!requests_getdx.http
