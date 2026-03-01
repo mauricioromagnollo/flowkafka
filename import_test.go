@@ -6,7 +6,7 @@ import (
 	"github.com/mauricioromagnollo/flowkafka"
 )
 
-func TestPublicAPICompiles(t *testing.T) {
+func TestPublicAPICompiles(_ *testing.T) {
 	_ = flowkafka.KafkaConfig{}
 	_ = flowkafka.Message{}
 }

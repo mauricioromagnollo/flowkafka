@@ -1,0 +1,184 @@
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+  # If your CI is slow, you can also tune concurrency:
+  # concurrency: 4
+
+output:
+  formats:
+    text:
+      path: stdout
+  print-linter-name: true
+  print-issued-lines: true
+  colors: true
+
+issues:
+  # Don't cap issues — better to see everything in CI.
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+  # Allow autofix locally (golangci-lint run --fix).
+  # You can keep this true; in CI it won't change files anyway.
+  fix: true
+
+linters:
+  default: none
+
+  enable:
+    # --- correctness / bugs ---
+    - govet
+    - staticcheck
+    - errcheck
+    - ineffassign
+    - unused
+    - unconvert
+    - bodyclose
+    - nilerr
+    - nilnil
+    - errorlint
+    - copyloopvar
+
+    # --- security-ish (OSS default: on, but with pragmatic excludes) ---
+    - gosec
+
+    # --- style / maintainability ---
+    - revive
+    - gocritic
+    - misspell
+    - dupword
+    - asciicheck
+    - bidichk
+    - prealloc
+    - whitespace
+    - nolintlint
+
+  disable:
+    # Usually noisy for libraries; you can enable later if desired.
+    - unparam
+
+linters-settings:
+  govet:
+    # Keep govet strong; you can selectively disable specific analyzers later.
+    enable-all: true
+    disable:
+      # Often too noisy / subjective for libs:
+      - fieldalignment
+
+  staticcheck:
+    checks:
+      - all
+      # Common exclusions in big repos; tune if you want stricter.
+      - -ST1000
+      - -ST1020
+      - -ST1021
+      - -ST1022
+      - -QF1008
+
+  errcheck:
+    # People typically ignore some defers; if you prefer strict, remove these.
+    exclude-functions:
+      - (io.Closer).Close
+      - (*os.File).Close
+      - (*bufio.Writer).Flush
+      - fmt.Fprint
+      - fmt.Fprintf
+      - fmt.Fprintln
+
+  revive:
+    # Keep revive useful but not annoying.
+    ignore-generated-header: true
+    severity: warning
+    rules:
+      - name: blank-imports
+      - name: context-as-argument
+      - name: context-keys-type
+      - name: early-return
+      - name: errorf
+      - name: error-naming
+      - name: exported
+      - name: if-return
+      - name: indent-error-flow
+      - name: range
+      - name: receiver-naming
+      - name: superfluous-else
+      - name: time-naming
+      - name: unexported-return
+      - name: unused-parameter
+        disabled: true # libraries often need to satisfy interfaces
+
+  gocritic:
+    enabled-tags:
+      - performance
+      - style
+      - diagnostic
+    disabled-checks:
+      # Often too chatty / subjective; enable later if you like.
+      - hugeParam
+      - unnamedResult
+
+  misspell:
+    locale: US
+
+  nolintlint:
+    # Allow unused nolint sometimes during migrations; can make strict later.
+    allow-unused: true
+    require-explanation: false
+    require-specific: false
+
+  gosec:
+    # Pragmatic baseline. Containerd and Caddy commonly exclude some rules too. :contentReference[oaicite:1]{index=1}
+    excludes:
+      - G104 # ignoring errors in some defers/loggers can be acceptable in controlled cases
+      - G404 # weak random (only if you intentionally use it; remove if you want strict)
+      - G114 # improper defer usage (can be noisy depending on patterns)
+
+exclusions:
+  generated: lax
+  presets:
+    - comments
+    - common-false-positives
+    - legacy
+    - std-error-handling
+
+  rules:
+    # Don't lint generated code / mocks etc.
+    - path: ".*\\.pb\\.go"
+      linters:
+        - revive
+        - gocritic
+        - gosec
+    - path: ".*_mock\\.go"
+      linters:
+        - revive
+        - gocritic
+    - path: ".*_test\\.go"
+      linters:
+        - gosec
+        - errcheck
+
+formatters:
+  enable:
+    - gofmt
+    - gofumpt
+    - goimports
+    - gci
+
+  settings:
+    goimports:
+      # Optional: set your module prefix to keep imports grouped nicely.
+      # local-prefixes:
+      #   - github.com/<you>/flowkafka
+      local-prefixes: []
+
+    gci:
+      custom-order: true
+      sections:
+        - standard
+        - default
+        # Optional: add your module prefix(es) here:
+        # - prefix(github.com/<you>/flowkafka)
+
+  exclusions:
+    generated: lax

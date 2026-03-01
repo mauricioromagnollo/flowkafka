@@ -49,3 +49,7 @@ test-coverage-web: ## Run test coverage and show in browser
 test-race: ## Run data race tests
 	CGO_ENABLED=1 go test -race ./...
 .PHONY: test-race
+
+lint: ## Run linter
+	docker run -t --rm -v ${PWD}/:/app -w /app golangci/golangci-lint:v2.9.0 golangci-lint run -v
+.PHONY: lint
