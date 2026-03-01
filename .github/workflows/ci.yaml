@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    paths-ignore:
+      - .github/CODEOWNERS
+      - .github/PULL_REQUEST_TEMPLATE.md
+      - "docs/**"
+      - .editorconfig
+      - .gitignore
+      - .env.example
+      - LICENSE
+      - Dockerfile.mkdocs
+      - mkdocs.yml
+      - README.md
+      - "*.http"
+      - "*.txt"
+      - "*.md"
+
+jobs:
+  lint_and_test:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup GO Version
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: .go-version
+          cache: false
+
+      - name: Check Lint
+        run: make lint
+
+      - name: Check Tests
+        run: make test
