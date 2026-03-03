@@ -1,7 +1,7 @@
 # ================================================
 # VARIABLES
 # ================================================
-APP_NAME = kafrest
+APP_NAME = flowkafka
 ENV_FILE = --env-file .env
 
 
@@ -51,5 +51,5 @@ test-race: ## Run data race tests
 .PHONY: test-race
 
 lint: ## Run linter
-	docker run -t --rm -v ${PWD}/:/app -w /app golangci/golangci-lint:v2.9.0 golangci-lint run -v
+	docker run -t --rm -v "$(PWD)/:/app" -w /app golangci/golangci-lint:v2.9.0 golangci-lint run -v
 .PHONY: lint
