@@ -54,85 +54,91 @@ linters:
     - whitespace
     - nolintlint
 
+  settings:
+    revive:
+      ignore-generated-header: true
+      severity: warning
+      rules:
+        - name: dot-imports
+          severity: warning
+          disabled: false
+          exclude: [""]
+          arguments:
+            - allowed-packages: ["github.com/onsi/ginkgo/v2", "github.com/onsi/gomega"]
+        - name: blank-imports
+        - name: context-as-argument
+        - name: context-keys-type
+        - name: early-return
+        - name: errorf
+        - name: error-naming
+        - name: exported
+        - name: if-return
+        - name: indent-error-flow
+        - name: range
+        - name: receiver-naming
+        - name: superfluous-else
+        - name: time-naming
+        - name: unexported-return
+        - name: unused-parameter
+          disabled: true # libraries often need to satisfy interfaces
+
+    govet:
+      # Keep govet strong; you can selectively disable specific analyzers later.
+      enable-all: true
+      disable:
+        # Often too noisy / subjective for libs:
+        - fieldalignment
+
+    staticcheck:
+      checks:
+        - all
+        # Common exclusions in big repos; tune if you want stricter.
+        - -ST1000
+        - -ST1020
+        - -ST1021
+        - -ST1022
+        - -QF1008
+
+    errcheck:
+      # People typically ignore some defers; if you prefer strict, remove these.
+      exclude-functions:
+        - (io.Closer).Close
+        - (*os.File).Close
+        - (*bufio.Writer).Flush
+        - fmt.Fprint
+        - fmt.Fprintf
+        - fmt.Fprintln
+
+    gocritic:
+      enabled-tags:
+        - performance
+        - style
+        - diagnostic
+      disabled-checks:
+        # Often too chatty / subjective; enable later if you like.
+        - hugeParam
+        - unnamedResult
+
+    misspell:
+      locale: US
+
+    nolintlint:
+      # Allow unused nolint sometimes during migrations; can make strict later.
+      allow-unused: true
+      require-explanation: false
+      require-specific: false
+
+    gosec:
+      # Pragmatic baseline. Containerd and Caddy commonly exclude some rules too. :contentReference[oaicite:1]{index=1}
+      excludes:
+        - G104 # ignoring errors in some defers/loggers can be acceptable in controlled cases
+        - G404 # weak ranm (only if you intentionally use it; remove if you want strict)
+        - G114 # improper defer usage (can be noisy depending on patterns)
+
   disable:
     # Usually noisy for libraries; you can enable later if desired.
     - unparam
 
-linters-settings:
-  govet:
-    # Keep govet strong; you can selectively disable specific analyzers later.
-    enable-all: true
-    disable:
-      # Often too noisy / subjective for libs:
-      - fieldalignment
-
-  staticcheck:
-    checks:
-      - all
-      # Common exclusions in big repos; tune if you want stricter.
-      - -ST1000
-      - -ST1020
-      - -ST1021
-      - -ST1022
-      - -QF1008
-
-  errcheck:
-    # People typically ignore some defers; if you prefer strict, remove these.
-    exclude-functions:
-      - (io.Closer).Close
-      - (*os.File).Close
-      - (*bufio.Writer).Flush
-      - fmt.Fprint
-      - fmt.Fprintf
-      - fmt.Fprintln
-
-  revive:
-    # Keep revive useful but not annoying.
-    ignore-generated-header: true
-    severity: warning
-    rules:
-      - name: blank-imports
-      - name: context-as-argument
-      - name: context-keys-type
-      - name: early-return
-      - name: errorf
-      - name: error-naming
-      - name: exported
-      - name: if-return
-      - name: indent-error-flow
-      - name: range
-      - name: receiver-naming
-      - name: superfluous-else
-      - name: time-naming
-      - name: unexported-return
-      - name: unused-parameter
-        disabled: true # libraries often need to satisfy interfaces
-
-  gocritic:
-    enabled-tags:
-      - performance
-      - style
-      - diagnostic
-    disabled-checks:
-      # Often too chatty / subjective; enable later if you like.
-      - hugeParam
-      - unnamedResult
-
-  misspell:
-    locale: US
-
-  nolintlint:
-    # Allow unused nolint sometimes during migrations; can make strict later.
-    allow-unused: true
-    require-explanation: false
-    require-specific: false
-
-  gosec:
-    # Pragmatic baseline. Containerd and Caddy commonly exclude some rules too. :contentReference[oaicite:1]{index=1}
-    excludes:
-      - G104 # ignoring errors in some defers/loggers can be acceptable in controlled cases
-      - G404 # weak random (only if you intentionally use it; remove if you want strict)
-      - G114 # improper defer usage (can be noisy depending on patterns)
 
 exclusions:
   generated: lax
@@ -157,6 +163,7 @@ exclusions:
       linters:
         - gosec
         - errcheck
+        - revive
 
 formatters:
   enable:
