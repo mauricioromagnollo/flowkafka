@@ -7,14 +7,13 @@ import (
 )
 
 func TestPublicAPICompiles(_ *testing.T) {
-	// kafka
-	_ = flowkafka.KafkaConfig{}
-	_ = flowkafka.Message{}
-	_ = flowkafka.KafkaClient(nil)
-	_ = flowkafka.NewKafkaClient(flowkafka.KafkaConfig{})
+	// Producer
+	_ = flowkafka.ProducerConfig{}
+	_ = flowkafka.Producer(nil)
+	_ = flowkafka.NewProducer(flowkafka.ProducerConfig{})
 
-	// schemaregistry
+	// Schema Registry
 	_ = flowkafka.SchemaRegistryConfig{}
-	_ = flowkafka.SchemaRegistryClient(nil)
-	_ = flowkafka.NewSchemaRegistryClient(flowkafka.SchemaRegistryConfig{})
+	_ = flowkafka.SchemaRegistry(nil)
+	_ = flowkafka.NewSchemaRegistry(flowkafka.SchemaRegistryConfig{})
 }
