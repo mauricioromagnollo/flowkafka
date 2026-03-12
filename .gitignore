@@ -43,3 +43,6 @@ tmp/
 # Rest Client
 *.http
 !requests_getdx.http
+
+# Copilot and other AI tools
+.github/copilot-instructions.md
