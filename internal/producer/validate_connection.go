@@ -22,7 +22,7 @@ func (c *producerClient) ValidateConnection(ctx context.Context) error {
 		Topics: []string{c.cfg.TopicName},
 	})
 	if err != nil {
-		return fmt.Errorf("failed to connect to kafka broker %s: %w", c.cfg.Brokers[0], err)
+		return fmt.Errorf("failed to connect producer to kafka broker %s: %w", c.cfg.Brokers[0], err)
 	}
 
 	for _, topic := range resp.Topics {
@@ -31,5 +31,5 @@ func (c *producerClient) ValidateConnection(ctx context.Context) error {
 		}
 	}
 
-	return fmt.Errorf("topic %s does not exist", c.cfg.TopicName)
+	return fmt.Errorf("producer failed to find topic %s", c.cfg.TopicName)
 }
