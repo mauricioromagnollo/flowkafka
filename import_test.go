@@ -25,4 +25,7 @@ func TestPublicAPICompiles(_ *testing.T) {
 		Brokers:   []string{"localhost:9092"},
 		TopicName: "any_topic_name",
 	})
+
+	// General Types
+	_ = flowkafka.Message{}
 }
