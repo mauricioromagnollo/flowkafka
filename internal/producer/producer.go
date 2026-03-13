@@ -8,15 +8,15 @@ import (
 type Producer interface {
 	// ValidateConnection checks if the producer can connect to the Kafka cluster.
 	// It takes a context and returns an error if the connection is not valid.
-	ValidateConnection(ctx context.Context) (err error)
-	// ProduceJSONMessage sends one JSON message to a Kafka topic.
+	ValidateConnection(ctx context.Context) error
+	// Publish sends one JSON message to a Kafka topic.
 	// It takes a context, the key, and the message to be sent.
 	// It returns an error if there was a failure in sending the message.
-	ProduceJSONMessage(ctx context.Context, key []byte, msg any) (err error)
-	// ProduceAvroMessage sends one Avro serialized message to a Kafka topic using Schema Registry (Confluent wire format).
+	Publish(ctx context.Context, key []byte, msg any) error
+	// PublishAvro sends one Avro serialized message to a Kafka topic using Schema Registry (Confluent wire format).
 	// It takes a context, the key, and the message to be sent.
 	// It returns an error if there was a failure in sending the message.
-	ProduceAvroMessage(ctx context.Context, key []byte, msg any) (err error)
+	PublishAvro(ctx context.Context, key []byte, msg any) error
 	// Close closes the producer and releases any resources it holds.
 	Close() error
 	// HasSchemaRegistry returns true if the producer is configured with a Schema Registry client.

@@ -29,7 +29,10 @@ if err := producer.ValidateConnection(ctx); err != nil {
 }
 
 // Send a JSON message
-err := producer.ProduceJSONMessage(ctx, []byte("key"), map[string]any{"event": "signup"})
+err := producer.Publish(ctx, []byte("key"), map[string]any{"event": "signup"})
+if err != nil {
+    log.Fatal(err)
+}
 ```
 
 ### Consumer (handler-based)
@@ -82,7 +85,10 @@ producer := flowkafka.NewProducer(flowkafka.ProducerConfig{
     SchemaRegistry: sr,
 })
 
-err := producer.ProduceAvroMessage(ctx, []byte("key"), myAvroStruct)
+err := producer.PublishAvro(ctx, []byte("key"), myAvroStruct)
+if err != nil {
+    log.Fatal(err)
+}
 ```
 
 ## License
