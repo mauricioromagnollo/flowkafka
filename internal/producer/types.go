@@ -19,11 +19,12 @@ type Config struct {
 	TopicName      string
 	SchemaRegistry schemaregistry.SchemaRegistry
 	// Optional Props
-	MaxAttempts  int           `default:"10"`
-	BatchTimeout time.Duration `default:"1s"`
-	WriteTimeout time.Duration `default:"30s"`
-	ReadTimeout  time.Duration `default:"30s"`
-	RequiredAcks RequiredAcks  `default:"-1"`
+	MaxAttempts   int           `default:"10"`
+	BatchTimeout  time.Duration `default:"1s"`
+	WriteTimeout  time.Duration `default:"30s"`
+	ReadTimeout   time.Duration `default:"30s"`
+	RequiredAcks  RequiredAcks  `default:"-1"`
+	ClientTimeout time.Duration `default:"10s"`
 }
 
 // RequiredAcks defines the acknowledgment level required from the Kafka cluster for a message to be considered successfully sent.
@@ -37,17 +38,3 @@ const (
 	// RequiredAcksAll means the producer waits for acknowledgments from all in-sync replicas. This provides the highest level of durability but also the highest latency.
 	RequiredAcksAll RequiredAcks = -1
 )
-
-// Message represents a Kafka message.
-// Key is the key of the message.
-// Value is the value of the message.
-// Headers contains any additional headers associated with the message.
-// Partition is the partition number of the message.
-// Offset is the offset of the message within the partition.
-type Message struct {
-	Key       []byte
-	Value     []byte
-	Headers   any
-	Partition int
-	Offset    int64
-}

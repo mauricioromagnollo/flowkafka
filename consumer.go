@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/mauricioromagnollo/flowkafka/internal/consumer"
+	"github.com/mauricioromagnollo/flowkafka/internal/shared/types"
 )
 
 // Consumer is an interface that defines the methods for interacting with a Kafka consumer.
@@ -23,11 +24,11 @@ func NewConsumer(config ConsumerConfig) Consumer {
 	}
 }
 
-func (c consumerWrapper) Consume(ctx context.Context, handler func(msg Message) error) error {
+func (c consumerWrapper) Consume(ctx context.Context, handler func(msg types.Message) error) error {
 	return c.client.Consume(ctx, handler)
 }
 
-func (c consumerWrapper) ConsumeMessages(ctx context.Context, msgsChan chan<- Message) error {
+func (c consumerWrapper) ConsumeMessages(ctx context.Context, msgsChan chan<- types.Message) error {
 	return c.client.ConsumeMessages(ctx, msgsChan)
 }
 

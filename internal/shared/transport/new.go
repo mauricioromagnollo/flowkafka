@@ -1,4 +1,4 @@
-package producer
+package transport
 
 import (
 	"crypto/tls"
@@ -8,8 +8,8 @@ import (
 	"github.com/segmentio/kafka-go/sasl/plain"
 )
 
-// buildTransport creates a Kafka transport with optional SASL/PLAIN authentication and TLS configuration based on the provided producer configuration.
-func buildTransport(cfg Config) *kafkago.Transport {
+// NewTransport creates a Kafka transport with optional SASL/PLAIN authentication and TLS configuration based on the provided producer configuration.
+func NewTransport(cfg Config) *kafkago.Transport {
 	transport := &kafkago.Transport{
 		DialTimeout: 10 * time.Second,
 	}

@@ -3,6 +3,7 @@ package producer
 import (
 	"context"
 
+	"github.com/mauricioromagnollo/flowkafka/internal/shared/types"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -11,7 +12,7 @@ type writerStub struct {
 	mock.Mock
 }
 
-func (m *writerStub) WriteMessages(ctx context.Context, msg Message) error {
+func (m *writerStub) WriteMessages(ctx context.Context, msg types.Message) error {
 	args := m.Called(ctx, msg)
 
 	return args.Error(0)

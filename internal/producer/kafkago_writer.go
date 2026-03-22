@@ -3,6 +3,7 @@ package producer
 import (
 	"context"
 
+	"github.com/mauricioromagnollo/flowkafka/internal/shared/types"
 	kafkago "github.com/segmentio/kafka-go"
 )
 
@@ -26,7 +27,7 @@ func newKafkaGoWriter(cfg Config, transport *kafkago.Transport) Writer {
 	return &kafkaGoWriter{writer: writer}
 }
 
-func (w *kafkaGoWriter) WriteMessages(ctx context.Context, msg Message) error {
+func (w *kafkaGoWriter) WriteMessages(ctx context.Context, msg types.Message) error {
 	return w.writer.WriteMessages(ctx, kafkago.Message{
 		Value: msg.Value,
 		Key:   msg.Key,

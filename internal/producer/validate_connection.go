@@ -3,31 +3,23 @@ package producer
 import (
 	"context"
 	"fmt"
-	"time"
-
-	kafkago "github.com/segmentio/kafka-go"
 )
 
 // ValidateConnection tests connectivity to Kafka brokers.
 func (c *producerClient) ValidateConnection(ctx context.Context) error {
-	transport := buildTransport(c.cfg)
-
-	client := &kafkago.Client{
-		Addr:      kafkago.TCP(c.cfg.Brokers[0]),
-		Transport: transport,
-		Timeout:   10 * time.Second,
-	}
-
-	resp, err := client.Metadata(ctx, &kafkago.MetadataRequest{
-		Topics: []string{c.cfg.TopicName},
-	})
+	// Use the client to fetch metadata from the Kafka broker to validate the connection
+	metadata, err := c.brokerClient.GetMetadata(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to connect producer to kafka broker %s: %w", c.cfg.Brokers[0], err)
+		return fmt.Errorf("producer failed to connect to kafka broker: %w", err)
 	}
 
-	for _, topic := range resp.Topics {
-		if topic.Name == c.cfg.TopicName && topic.Error == nil {
-			return nil
+	// Check if the topic exists and has no errors
+	for _, topic := range metadata.Topics {
+		if topic.Name == c.cfg.TopicName {
+			if topic.Error != nil {
+				return fmt.Errorf("producer failed to find topic %s: %w", c.cfg.TopicName, topic.Error)
+			}
+			return nil // Topic found and has no errors
 		}
 	}
 

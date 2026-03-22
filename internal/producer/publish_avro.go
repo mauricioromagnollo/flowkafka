@@ -7,6 +7,7 @@ import (
 	"math"
 
 	avro "github.com/hamba/avro/v2"
+	"github.com/mauricioromagnollo/flowkafka/internal/shared/types"
 )
 
 // PublishAvro sends a message to a Kafka topic using Avro serialization
@@ -47,7 +48,7 @@ func (c *producerClient) PublishAvro(ctx context.Context, key []byte, msg any) e
 	copy(messageValue[5:], avroPayload)
 
 	// Send message to Kafka using the persistent writer
-	if err := c.writer.WriteMessages(ctx, Message{
+	if err := c.writer.WriteMessages(ctx, types.Message{
 		Value: messageValue,
 		Key:   key,
 	}); err != nil {
