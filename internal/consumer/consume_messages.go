@@ -3,6 +3,8 @@ package consumer
 import (
 	"context"
 	"fmt"
+
+	"github.com/mauricioromagnollo/flowkafka/internal/shared/types"
 )
 
 // ConsumeMessages reads messages from the Kafka topic and sends them to the
@@ -10,7 +12,7 @@ import (
 // it returns nil. If a fetch or commit error occurs it returns immediately.
 // The caller owns the channel and is responsible for closing it after
 // ConsumeMessages returns.
-func (c *consumerClient) ConsumeMessages(ctx context.Context, msgsChan chan<- Message) error {
+func (c *consumerClient) ConsumeMessages(ctx context.Context, msgsChan chan<- types.Message) error {
 	for {
 		m, err := c.reader.FetchMessage(ctx)
 		if err != nil {
@@ -20,7 +22,7 @@ func (c *consumerClient) ConsumeMessages(ctx context.Context, msgsChan chan<- Me
 			return fmt.Errorf("failed to fetch message from topic %s: %w", c.cfg.TopicName, err)
 		}
 
-		msg := Message{
+		msg := types.Message{
 			Key:       m.Key,
 			Value:     m.Value,
 			Headers:   m.Headers,

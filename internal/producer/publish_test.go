@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/mauricioromagnollo/flowkafka/internal/shared/types"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
@@ -45,7 +46,7 @@ var _ = Describe("Publish", func() {
 		msg := map[string]string{"key": "value"}
 		ctx := context.Background()
 
-		mockWriter.On("WriteMessages", ctx, Message{
+		mockWriter.On("WriteMessages", ctx, types.Message{
 			Value: []byte(`{"key":"value"}`),
 			Key:   nil,
 		}).Return(fmt.Errorf("any error reason returned by the writer"))
@@ -67,7 +68,7 @@ var _ = Describe("Publish", func() {
 		msgKey := []byte("message-key")
 		ctx := context.Background()
 
-		mockWriter.On("WriteMessages", ctx, Message{
+		mockWriter.On("WriteMessages", ctx, types.Message{
 			Value: []byte(`{"key":"value"}`),
 			Key:   msgKey,
 		}).Return(nil)

@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
+	"github.com/mauricioromagnollo/flowkafka/internal/shared/types"
 )
 
 // Publish sends one message to a Kafka topic.
@@ -15,7 +17,7 @@ func (c *producerClient) Publish(ctx context.Context, key []byte, msg any) error
 		return fmt.Errorf("failed to marshal message to publish: %w", err)
 	}
 
-	if err := c.writer.WriteMessages(ctx, Message{
+	if err := c.writer.WriteMessages(ctx, types.Message{
 		Value: message,
 		Key:   key,
 	}); err != nil {

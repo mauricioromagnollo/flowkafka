@@ -3,13 +3,15 @@ package consumer
 import (
 	"context"
 	"fmt"
+
+	"github.com/mauricioromagnollo/flowkafka/internal/shared/types"
 )
 
 // Consume reads messages from the Kafka topic in a blocking loop.
 // Each message is passed to the handler function. Messages are committed
 // only after the handler returns nil. The loop exits when the context is
 // canceled or the handler returns an error.
-func (c *consumerClient) Consume(ctx context.Context, handler func(msg Message) error) error {
+func (c *consumerClient) Consume(ctx context.Context, handler func(msg types.Message) error) error {
 	for {
 		m, err := c.reader.FetchMessage(ctx)
 		if err != nil {
@@ -19,7 +21,7 @@ func (c *consumerClient) Consume(ctx context.Context, handler func(msg Message) 
 			return fmt.Errorf("failed to fetch message from topic %s: %w", c.cfg.TopicName, err)
 		}
 
-		msg := Message{
+		msg := types.Message{
 			Key:       m.Key,
 			Value:     m.Value,
 			Headers:   m.Headers,
