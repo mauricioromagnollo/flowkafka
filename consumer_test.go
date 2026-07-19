@@ -37,9 +37,9 @@ var _ = Describe("Consumer", func() {
 
 			Expect(consumer).ToNot(BeNil())
 
-			wrapper, ok := consumer.(consumerWrapper)
+			newWrapper, ok := consumer.(consumerWrapper)
 			Expect(ok).To(BeTrue())
-			Expect(wrapper.client).ToNot(BeNil())
+			Expect(newWrapper.client).ToNot(BeNil())
 		})
 	})
 

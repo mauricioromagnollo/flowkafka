@@ -55,15 +55,25 @@ func TestPublicRequiredAcksValues(t *testing.T) {
 	}
 }
 
-func TestPublicTypeAliasesAreAssignable(t *testing.T) {
-	// The public types are aliases of the internal ones, so a value produced by
-	// the constructors must satisfy the exported interfaces without conversion.
-	var producer flowkafka.Producer = flowkafka.NewProducer(flowkafka.ProducerConfig{})
-	if producer == nil {
+// The public types are aliases of the internal ones, so a value produced by the
+// constructors must satisfy the exported interfaces without conversion. These
+// declarations fail to compile if that ever stops being true.
+var (
+	_ flowkafka.Producer       = flowkafka.NewProducer(flowkafka.ProducerConfig{})
+	_ flowkafka.SchemaRegistry = flowkafka.NewSchemaRegistry(flowkafka.SchemaRegistryConfig{})
+	_ flowkafka.Consumer       = flowkafka.NewConsumer(flowkafka.ConsumerConfig{
+		GroupID:   "any_group_id",
+		Brokers:   []string{"localhost:9092"},
+		TopicName: "any_topic_name",
+	})
+)
+
+func TestPublicConstructorsReturnNonNil(t *testing.T) {
+	if producer := flowkafka.NewProducer(flowkafka.ProducerConfig{}); producer == nil {
 		t.Fatal("NewProducer returned nil")
 	}
 
-	var consumer flowkafka.Consumer = flowkafka.NewConsumer(flowkafka.ConsumerConfig{
+	consumer := flowkafka.NewConsumer(flowkafka.ConsumerConfig{
 		GroupID:   "any_group_id",
 		Brokers:   []string{"localhost:9092"},
 		TopicName: "any_topic_name",
@@ -72,8 +82,7 @@ func TestPublicTypeAliasesAreAssignable(t *testing.T) {
 		t.Fatal("NewConsumer returned nil")
 	}
 
-	var schemaRegistry flowkafka.SchemaRegistry = flowkafka.NewSchemaRegistry(flowkafka.SchemaRegistryConfig{})
-	if schemaRegistry == nil {
+	if schemaRegistry := flowkafka.NewSchemaRegistry(flowkafka.SchemaRegistryConfig{}); schemaRegistry == nil {
 		t.Fatal("NewSchemaRegistry returned nil")
 	}
 }
