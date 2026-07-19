@@ -3,6 +3,7 @@ package brokerclient
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	kafkago "github.com/segmentio/kafka-go"
 )
@@ -12,7 +13,7 @@ func (c *brokerClient) GetMetadata(ctx context.Context) (*ClientMetadata, error)
 		Topics: []string{c.cfg.TopicName},
 	})
 	if err != nil {
-		return nil, fmt.Errorf("failed to connect producer to kafka broker %s: %w", c.cfg.Brokers[0], err)
+		return nil, fmt.Errorf("failed to connect producer to kafka broker %s: %w", strings.Join(c.cfg.Brokers, ","), err)
 	}
 
 	return &ClientMetadata{
