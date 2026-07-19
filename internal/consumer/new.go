@@ -8,7 +8,7 @@ import (
 
 // consumerClient wraps Kafka reading with consumer group and manual commit support.
 type consumerClient struct {
-	reader       *kafkago.Reader
+	reader       Reader
 	cfg          Config
 	transport    *kafkago.Transport
 	brokerClient brokerclient.BrokerClient
@@ -26,12 +26,7 @@ func NewConsumer(config Config) Consumer {
 		TopicName: config.TopicName,
 		Transport: transport,
 	})
-	reader := kafkago.NewReader(kafkago.ReaderConfig{
-		Brokers: config.Brokers,
-		GroupID: config.GroupID,
-		Topic:   config.TopicName,
-		Dialer:  dialer,
-	})
+	reader := newKafkaGoReader(config, dialer)
 
 	return &consumerClient{
 		reader:       reader,
