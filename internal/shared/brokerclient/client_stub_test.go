@@ -8,11 +8,15 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("BrokerClientStub", func() {
-	var stub *BrokerClientStub
+// testContextKey is a dedicated key type so that values stored in a context
+// during these specs cannot collide with keys defined elsewhere.
+type testContextKey struct{}
+
+var _ = Describe("Stub", func() {
+	var stub *Stub
 
 	BeforeEach(func() {
-		stub = new(BrokerClientStub)
+		stub = new(Stub)
 	})
 
 	AfterEach(func() {
@@ -54,7 +58,7 @@ var _ = Describe("BrokerClientStub", func() {
 	})
 
 	It("should return the metadata for the given context when a custom context is used", func() {
-		ctx := context.WithValue(context.Background(), struct{}{}, "any-value")
+		ctx := context.WithValue(context.Background(), testContextKey{}, "any-value")
 		expected := &ClientMetadata{}
 
 		stub.On("GetMetadata", ctx).Return(expected, nil)

@@ -17,21 +17,21 @@ type consumerClient struct {
 // NewConsumer creates a new Kafka consumer with the given configuration.
 func NewConsumer(config Config) Consumer {
 	dialer := buildDialer(config)
-	transport := transport.NewTransport(transport.Config{
+	kafkaTransport := transport.NewTransport(transport.Config{
 		SaslUsername: config.SaslUsername,
 		SaslPassword: config.SaslPassword,
 	})
 	brokerClient := brokerclient.NewBrokerClient(brokerclient.Config{
 		Brokers:   config.Brokers,
 		TopicName: config.TopicName,
-		Transport: transport,
+		Transport: kafkaTransport,
 	})
 	reader := newKafkaGoReader(config, dialer)
 
 	return &consumerClient{
 		reader:       reader,
 		cfg:          config,
-		transport:    transport,
+		transport:    kafkaTransport,
 		brokerClient: brokerClient,
 	}
 }

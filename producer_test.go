@@ -34,9 +34,9 @@ var _ = Describe("Producer", func() {
 
 			Expect(producer).ToNot(BeNil())
 
-			wrapper, ok := producer.(producerWrapper)
+			newWrapper, ok := producer.(producerWrapper)
 			Expect(ok).To(BeTrue())
-			Expect(wrapper.client).ToNot(BeNil())
+			Expect(newWrapper.client).ToNot(BeNil())
 		})
 	})
 

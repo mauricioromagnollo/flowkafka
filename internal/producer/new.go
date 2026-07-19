@@ -16,16 +16,16 @@ type producerClient struct {
 
 // NewProducer creates a new Kafka producer with the given configuration.
 func NewProducer(cfg Config) Producer {
-	transport := transport.NewTransport(transport.Config{
+	kafkaTransport := transport.NewTransport(transport.Config{
 		SaslUsername: cfg.SaslUsername,
 		SaslPassword: cfg.SaslPassword,
 	})
-	writer := newKafkaGoWriter(cfg, transport)
+	writer := newKafkaGoWriter(cfg, kafkaTransport)
 	client := brokerclient.NewBrokerClient(brokerclient.Config{
 		Brokers:   cfg.Brokers,
 		TopicName: cfg.TopicName,
 		Timeout:   cfg.ClientTimeout,
-		Transport: transport,
+		Transport: kafkaTransport,
 	})
 
 	return &producerClient{

@@ -10,10 +10,10 @@ import (
 )
 
 var _ = Describe("ValidateConnection", func() {
-	var mockBrokerClient *brokerclient.BrokerClientStub
+	var mockBrokerClient *brokerclient.Stub
 
 	BeforeEach(func() {
-		mockBrokerClient = new(brokerclient.BrokerClientStub)
+		mockBrokerClient = new(brokerclient.Stub)
 	})
 
 	AfterEach(func() {
