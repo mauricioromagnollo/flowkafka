@@ -1,0 +1,35 @@
+name: Question
+description: Ask about how to use flowkafka
+title: "question: "
+labels: [question]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for usage questions. If you found a defect, please use the
+        Bug Report form instead.
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you trying to do?
+      description: |
+        Describe the outcome you want — for example producing Avro messages against a
+        Schema Registry, or connecting to a broker with SASL and TLS.
+    validations:
+      required: true
+
+  - type: textarea
+    id: attempts
+    attributes:
+      label: What have you tried so far?
+      description: Share the code you already have, with credentials removed.
+      render: go
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I read the README and the reference documentation on [pkg.go.dev](https://pkg.go.dev/github.com/mauricioromagnollo/flowkafka).
+          required: true

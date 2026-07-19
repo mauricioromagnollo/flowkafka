@@ -1,0 +1,60 @@
+name: Feature Request
+description: Suggest a new capability or improvement for flowkafka
+title: "feat: "
+labels: [enhancement, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement.
+
+        Please search the
+        [existing issues](https://github.com/mauricioromagnollo/flowkafka/issues?q=is%3Aissue)
+        first — the idea may already be under discussion. For open-ended ideas that are
+        not yet a concrete proposal, consider starting a
+        [Discussion](https://github.com/mauricioromagnollo/flowkafka/discussions) instead.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or motivation
+      description: |
+        What problem are you trying to solve? Describe the use case rather than the
+        solution, so alternative designs can be considered.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: A clear description of what you would like flowkafka to do.
+    validations:
+      required: true
+
+  - type: textarea
+    id: api-example
+    attributes:
+      label: Proposed API example
+      description: |
+        Show how the feature would look from a caller's point of view. This helps keep
+        the public API flat and consistent with the existing constructors.
+      render: go
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: |
+        Other approaches you evaluated, including workarounds you are using today with
+        flowkafka or directly with kafka-go.
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched the existing issues and discussions and did not find this request.
+          required: true
+        - label: I am willing to open a pull request implementing this feature.
+          required: false
