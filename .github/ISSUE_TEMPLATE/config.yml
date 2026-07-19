@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and Ideas
+    url: https://github.com/mauricioromagnollo/flowkafka/discussions
+    about: Ask open-ended questions and share ideas with the community on GitHub Discussions.
+  - name: API Documentation
+    url: https://pkg.go.dev/github.com/mauricioromagnollo/flowkafka
+    about: Browse the full reference documentation for the public API on pkg.go.dev.
+  - name: Report a Security Vulnerability
+    url: https://github.com/mauricioromagnollo/flowkafka/security/advisories/new
+    about: Report a security issue privately. Please do not open a public issue for vulnerabilities.

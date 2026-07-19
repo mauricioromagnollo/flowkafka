@@ -1,0 +1,98 @@
+name: Bug Report
+description: Report a reproducible problem in flowkafka
+title: "bug: "
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug.
+
+        Before opening this issue, please search the
+        [existing issues](https://github.com/mauricioromagnollo/flowkafka/issues?q=is%3Aissue)
+        to check whether the same problem has already been reported. If you find a
+        matching issue, add your details there instead of opening a new one.
+
+  - type: input
+    id: flowkafka-version
+    attributes:
+      label: flowkafka version
+      description: The version listed in your `go.mod`, or the commit SHA if you depend on a pseudo-version.
+      placeholder: v0.3.0
+    validations:
+      required: true
+
+  - type: input
+    id: go-version
+    attributes:
+      label: Go version
+      description: Output of `go version`.
+      placeholder: go version go1.26.0 darwin/arm64
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected component
+      description: Which part of the library the bug comes from.
+      options:
+        - Producer
+        - Consumer
+        - Schema Registry
+        - Avro serialization
+        - Authentication (SASL/TLS)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug description
+      description: A clear and concise description of what is going wrong.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: |
+        A minimal reproducible example. Include the configuration you pass to
+        `NewProducer`, `NewConsumer` or `NewSchemaRegistry`, with credentials removed.
+      render: go
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and error output
+      description: What actually happened. Paste the full error message, stack trace or logs.
+      render: shell
+
+  - type: input
+    id: kafka-version
+    attributes:
+      label: Kafka broker version
+      description: Version and distribution of the broker you are connecting to, if relevant.
+      placeholder: Apache Kafka 3.7.0 / Confluent Platform 7.6 / Redpanda 24.1
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched the existing issues and did not find a report of this bug.
+          required: true
+        - label: I reproduced this on the latest released version of flowkafka.
+          required: true

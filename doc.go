@@ -1,18 +1,24 @@
 // Package flowkafka provides a high-level abstraction for working with
 // Apache Kafka in Go applications.
 //
-// It wraps [segmentio/kafka-go] behind clean interfaces so you can produce,
-// consume, and manage Kafka messages with minimal boilerplate.
+// It wraps [github.com/segmentio/kafka-go] behind clean interfaces so you can
+// produce, consume, and manage Kafka messages with minimal boilerplate.
 //
-// The package exposes two independent clients:
+// The package exposes three independent clients:
 //
-//   - [KafkaClient] — produce JSON or Avro messages, consume with manual
-//     commit, validate broker connectivity, and manage reader lifecycle.
-//   - [SchemaRegistryClient] — create, query, and validate schemas against
-//     any Confluent-compatible Schema Registry.
+//   - [Producer] — publish JSON messages with Publish or Avro messages in the
+//     Confluent wire format with PublishAvro, validate broker connectivity,
+//     and manage the writer lifecycle.
+//   - [Consumer] — consume messages with consumer group support and manual
+//     commit, either through a handler function with Consume or through a
+//     channel with ConsumeMessages.
+//   - [SchemaRegistry] — create, query, and validate schemas against any
+//     Confluent-compatible Schema Registry.
 //
-// Both clients are defined as interfaces, making them straightforward to
-// mock in unit tests.
+// All three are defined as interfaces, making them straightforward to mock in
+// unit tests.
 //
-// See the project README and the examples/ directory for runnable demos.
+// Create clients with [NewProducer], [NewConsumer], and [NewSchemaRegistry].
+//
+// See the project README for runnable examples.
 package flowkafka
