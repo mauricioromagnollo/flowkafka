@@ -8,7 +8,7 @@ require (
 	github.com/onsi/gomega v1.39.1
 	github.com/riferrei/srclient v0.7.4
 	github.com/segmentio/kafka-go v0.4.50
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.11.1
 )
 
 require (
